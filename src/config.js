@@ -4,7 +4,7 @@ export const BASE_URL = 'https://test.hashtagfile.com';
 
 export const DEFAULT_PARAMS = {
     // Таймаут 3 минуты для больших файлов
-    //timeout: '180s', 
+    timeout: '180s', 
     headers: {
         // --- ЗАГОЛОВКИ ИЗ ВАШЕГО НОВОГО CURL ---
         'Accept': '*/*',

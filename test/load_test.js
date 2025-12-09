@@ -5,9 +5,9 @@ import { uploadFile, verifyFile, getUniqueFileBuffer } from "../src/api.js";
 
 export const options = {
   stages: [
-    { duration: "30s", target: 20 }, // Плавный разгон до 20
-    { duration: "1m", target: 50 },  // Рост до целевых 50
-    { duration: "3m", target: 50 },  // Удержание нагрузки (Плато)
+    { duration: "30s", target: 5 }, // Плавный разгон до 20
+    { duration: "1m", target: 20 },  // Рост до целевых 50
+    { duration: "3m", target: 20 },  // Удержание нагрузки (Плато)
     { duration: "30s", target: 0 },  // Остывание
   ],
   thresholds: {

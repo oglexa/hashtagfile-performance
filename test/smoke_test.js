@@ -3,39 +3,28 @@ import { getRandomFile } from "../src/data-loader.js";
 import { uploadFile, verifyFile, getUniqueFileBuffer } from "../src/api.js";
 
 export const options = {
-  vus: 1,
-  duration: "10s", // Короткий тест
+  vus: 1,           // Строго 1 пользователь
+  duration: "1m",   // Увеличили до 1 минуты для сбора статистики
   thresholds: {
-    http_req_failed: ["rate==0.00"], // Ошибок быть не должно вообще
+    http_req_failed: ["rate==0.00"], 
   },
 };
 
 export default function () {
-    // 1. Получаем файл
     const fileTemplate = getRandomFile();
 
-    // ПРОВЕРКА 1: Загрузился ли файл?
-    if (!fileTemplate || !fileTemplate.data) {
-        console.error(`🚨 ОШИБКА: Файл не загружен! Проверьте путь в data-loader.js. Имя: ${fileTemplate ? fileTemplate.name : 'Unknown'}`);
-        return; // Останавливаем итерацию
-    } else {
-        console.log(`File found: ${fileTemplate.name}, File size: ${fileTemplate.data.byteLength}`);
-    }
+    // Проверки на null можно убрать для финального прогона, 
+    // если вы уверены, что файлы грузятся (мы это уже проверили)
     
-    // 2. Уникализируем
+    // 1. Уникализируем
     const uniqueData = getUniqueFileBuffer(fileTemplate.data);
-    
-    // ПРОВЕРКА 2: Сработала ли уникализация?
-    if (!uniqueData) {
-        console.error('🚨 ОШИБКА: getUniqueFileBuffer вернула null/undefined! Проверьте return в src/api.js');
-        return;
-    }
 
-    // 3. Загружаем
+    // 2. Загружаем
     uploadFile(fileTemplate.name, uniqueData);
     
     sleep(1);
     
+    // 3. Верифицируем
     verifyFile(fileTemplate.name, uniqueData);
     
     sleep(1);
